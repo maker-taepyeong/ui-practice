@@ -13,6 +13,11 @@ function Modal({ onClose }: ModalProps) {
     handleOpen: handleOpenVerification,
     handleClose: handleCloseVerification,
   } = useModal();
+  const {
+    isOpen: showAddAddressModal,
+    handleOpen: handleOpenAddAddress,
+    handleClose: handleCloseAddAddress,
+  } = useModal();
 
   return (
     <ReactPortal wrapperId="portal-root">
@@ -71,7 +76,9 @@ function Modal({ onClose }: ModalProps) {
               <button type="button" onClick={handleOpenVerification}>
                 Verify Address
               </button>
-              <button type="button">Add</button>
+              <button type="button" onClick={handleOpenAddAddress}>
+                Add
+              </button>
               <button type="button" onClick={onClose}>
                 Cancel
               </button>
@@ -81,49 +88,9 @@ function Modal({ onClose }: ModalProps) {
         {showVerificationModal && (
           <AddressVerificationModal onClose={handleCloseVerification} />
         )}
-        {/* <div
-        id="dialog3"
-        role="dialog"
-        aria-labelledby="dialog3_label"
-        aria-describedby="dialog3_desc"
-        aria-modal="true"
-        className="hidden"
-      >
-        <h2 id="dialog3_label" className="dialog_label">
-          Address Added
-        </h2>
-        <p id="dialog3_desc" className="dialog_desc">
-          The address you provided has been added to your list of delivery
-          addresses. It is ready for immediate use. If you wish to remove it,
-          you can do so from <a href="#">your profile.</a>
-        </p>
-        <div className={styles.dialog_form_action}>
-          <button type="button" id="dialog3_close_btn">
-            OK
-          </button>
-        </div>
-      </div> */}
-        {/* <div
-        id="dialog4"
-        role="dialog"
-        aria-labelledby="dialog4_label"
-        aria-describedby="dialog4_desc"
-        className="hidden"
-        aria-modal="true"
-      >
-        <h2 id="dialog4_label" className="dialog_label">
-          End of the Road!
-        </h2>
-        <p id="dialog4_desc" className="dialog_desc">
-          You activated a fake link or button that goes nowhere! The link or
-          button is present for demonstration purposes only.
-        </p>
-        <div className={styles.dialog_form_action}>
-          <button type="button" id="dialog4_close_btn">
-            Close
-          </button>
-        </div>
-      </div> */}
+        {showAddAddressModal && (
+          <AddAddressModal onClose={handleCloseAddAddress} />
+        )}
       </div>
     </ReactPortal>
   );
@@ -153,6 +120,12 @@ function ReactPortal({
     setWrapperElement(element);
   }, [wrapperId]);
 
+  React.useEffect(() => {
+    return () => {
+      cleanupWrapper(wrapperId);
+    };
+  }, []);
+
   // wrapperElement state will be null on the very first render.
   if (wrapperElement === null) return null;
 
@@ -166,7 +139,20 @@ function createWrapperAndAppendToBody(wrapperId: string) {
   return wrapperElement;
 }
 
+function cleanupWrapper(wrapperId: string) {
+  const wrapperElement = document.getElementById(wrapperId);
+  if (wrapperElement) {
+    document.body.removeChild(wrapperElement);
+  }
+}
+
 function AddressVerificationModal({ onClose }: ModalProps) {
+  const {
+    isOpen: showEndOfDepthModal,
+    handleOpen: handleOpenEndOfDepthModal,
+    handleClose: handleCloseEndOfDepth,
+  } = useModal();
+
   return (
     <ReactPortal wrapperId="portal-root-2">
       <div className={styles.backdrop}>
@@ -250,9 +236,75 @@ function AddressVerificationModal({ onClose }: ModalProps) {
           </div>
           <div className={styles.dialog_form_actions}>
             <a href="#">link to help</a>
-            <button type="button">accepting an alternative form</button>
+            <button type="button" onClick={handleOpenEndOfDepthModal}>
+              accepting an alternative form
+            </button>
             <button type="button" onClick={onClose}>
               Close
+            </button>
+          </div>
+          {showEndOfDepthModal && (
+            <EndOfDepthModal onClose={handleCloseEndOfDepth} />
+          )}
+        </div>
+      </div>
+    </ReactPortal>
+  );
+}
+
+function EndOfDepthModal({ onClose }: ModalProps) {
+  return (
+    <ReactPortal wrapperId="portal-root-3">
+      <div className={styles.backdrop}>
+        <div
+          id="dialog4"
+          role="dialog"
+          aria-labelledby="dialog4_label"
+          aria-describedby="dialog4_desc"
+          className={styles.dialog}
+          aria-modal="true"
+        >
+          <h2 id="dialog4_label" className={styles.dialog_label}>
+            End of the Road!
+          </h2>
+          <p id="dialog4_desc" className={styles.dialog_desc}>
+            You activated a fake link or button that goes nowhere! The link or
+            button is present for demonstration purposes only.
+          </p>
+          <div className={styles.dialog_form_actions}>
+            <button type="button" id="dialog4_close_btn" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </ReactPortal>
+  );
+}
+
+function AddAddressModal({ onClose }: ModalProps) {
+  return (
+    <ReactPortal wrapperId="원하는-이름으로">
+      <div className={styles.backdrop}>
+        <div
+          id="dialog3"
+          role="dialog"
+          aria-labelledby="dialog3_label"
+          aria-describedby="dialog3_desc"
+          aria-modal="true"
+          className={styles.dialog}
+        >
+          <h2 id="dialog3_label" className={styles.dialog_label}>
+            Address Added
+          </h2>
+          <p id="dialog3_desc" className={styles.dialog_desc}>
+            The address you provided has been added to your list of delivery
+            addresses. It is ready for immediate use. If you wish to remove it,
+            you can do so from <a href="#">your profile.</a>
+          </p>
+          <div className={styles.dialog_form_actions}>
+            <button type="button" id="dialog3_close_btn" onClick={onClose}>
+              OK
             </button>
           </div>
         </div>
