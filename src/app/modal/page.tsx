@@ -3,16 +3,18 @@
 import React from "react";
 import Modal from "@/components/Modal";
 import useModal from "@/hooks/modal/useModal";
-import Link from "next/link";
-import styles from "@/styles/pages/page.modal.module.css";
+import styles from "@/styles/pages/modal.module.css";
 
 function ModalPage() {
   const { isOpen, handleOpen, handleClose } = useModal();
 
   return (
     <div className={styles.container}>
-      <Link href="/">Home</Link>
-      <h1>Dialog</h1>
+      <h1>
+        <a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/">
+          Dialog
+        </a>
+      </h1>
       <p>
         사용자가 중요한 정보에 집중하도록 강요하기 위해 사용하는 개념.
         일시적으로 웹페이지의 다른 기능을 사용할 수 없게 만든다.
