@@ -4,7 +4,7 @@ import React from "react";
 import Modal from "@/components/Modal";
 import useModal from "@/hooks/modal/useModal";
 import Link from "next/link";
-import styles from "@/styles/pages/page.modal.module.css";
+import styles from "@/styles/pages/modal.module.css";
 
 function ModalPage() {
   const { isOpen, handleOpen, handleClose } = useModal();

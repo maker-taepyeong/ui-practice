@@ -124,6 +124,7 @@ function ReactPortal({
     return () => {
       cleanupWrapper(wrapperId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // wrapperElement state will be null on the very first render.

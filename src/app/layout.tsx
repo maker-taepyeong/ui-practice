@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import Gnb from "@/components/Gnb";
 
 export const metadata: Metadata = {
   title: "UI Catalog",
@@ -21,8 +22,8 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <Gnb />
         {children}
-        <div id="portal-root" />
       </body>
     </html>
   );
